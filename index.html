@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bungaliva | Doğayla İç İçe Bungalov Tatili</title>
+<meta name="description" content="Bungaliva doğa içinde konforlu, özel ve güvenilir bungalov tatili sunar.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{--primary:#2f7d32}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,sans-serif;background:#f6f6f6;color:#333}
+a{text-decoration:none;color:inherit}
+
+/* HERO */
+header{
+  height:90vh;
+  background:url("images/hero.jpg") center/cover no-repeat;
+  position:relative;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+header::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.hero{position:relative;z-index:2}
+.hero h1{font-size:3rem;margin-bottom:10px}
+.btn{background:var(--primary);color:#fff;padding:14px 28px;border-radius:40px;font-weight:600}
+
+/* SECTIONS */
+section{padding:80px 8%}
+.section-title{text-align:center;margin-bottom:40px}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px}
+.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.card h3{margin:16px}
+.card p{margin:0 16px 20px;font-size:.95rem}
+
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr)}
+.gallery img{width:100%;height:140px;object-fit:cover;cursor:pointer}
+
+/* ABOUT */
+.about{max-width:900px;margin:0 auto;text-align:center}
+.about p{line-height:1.8;font-size:1rem}
+
+/* RESERVATION */
+#rezervasyon{text-align:center}
+form{max-width:420px;margin:0 auto;background:#fff;padding:30px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+input,button{width:100%;padding:14px;margin-bottom:12px;border-radius:10px;border:1px solid #ddd;font-family:inherit}
+button{background:var(--primary);color:#fff;border:none;font-weight:600;cursor:pointer}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
+.lightbox img{max-width:90%;max-height:90%;border-radius:18px}
+
+footer{background:#111;color:#ccc;text-align:center;padding:30px}
+
+@media(max-width:768px){
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:2.3rem}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="hero">
+    <h1>Bungaliva</h1>
+    <p>Doğanın kalbinde özel bungalov tatili</p>
+    <a href="#rezervasyon" class="btn">Rezervasyon Yap</a>
+  </div>
+</header>
+
+<section>
+  <div class="section-title">
+    <h2>Bungalovlarımız</h2>
+  </div>
+  <div class="grid" id="bungalovlar"></div>
+</section>
+
+<section>
+  <div class="section-title">
+    <h2>Hakkımızda</h2>
+  </div>
+  <div class="about">
+    <p>
+      Uzun yıllar turizm sektöründeki deneyimimizi gelişen teknolojiyle harmanlayarak
+      Bungaliva’yı hayata geçirdik. Amacımız; misafirlerimize doğa ile iç içe,
+      konforlu, güvenilir ve huzurlu bir bungalov tatili sunmaktır.
+    </p>
+  </div>
+</section>
+
+<section id="rezervasyon">
+  <h2>Rezervasyon Oluştur</h2>
+  <form onsubmit="sendWhatsApp(event)">
+    <input placeholder="Ad Soyad" required>
+    <input placeholder="Telefon" required>
+    <input type="date" required>
+    <input type="date" required>
+    <button>WhatsApp ile Gönder</button>
+  </form>
+</section>
+
+<div class="lightbox" onclick="this.style.display='none'">
+  <img id="lightbox-img">
+</div>
+
+<footer>
+  © 2026 Bungaliva • Tüm Hakları Saklıdır
+</footer>
+
+<script>
+const placeholder = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85";
+const names = [
+"Jakuzili Bungalov","Havuzlu Bungalov","Orman İçi Bungalov","Balayı Bungalovu",
+"Göl Manzaralı","Aile Bungalovu","Minimal Bungalov","Lüks Bungalov",
+"Dağ Manzaralı","Bahçeli Bungalov","Ahşap Bungalov","Panoramik Bungalov"
+];
+
+const container=document.getElementById("bungalovlar");
+
+names.forEach((name,i)=>{
+  container.innerHTML+=`
+  <div class="card">
+    <div class="gallery">
+      <img src="images/bungalov${i+1}-main.jpg" onclick="openLightbox(this.src)">
+      ${Array(7).fill(0).map(()=>`<img src="${placeholder}" onclick="openLightbox(this.src)">`).join("")}
+    </div>
+    <h3>${name}</h3>
+    <p>Doğa ile iç içe, konforlu ve size özel bir konaklama deneyimi sunar.</p>
+  </div>`;
+});
+
+function openLightbox(src){
+  document.getElementById("lightbox-img").src=src;
+  document.querySelector(".lightbox").style.display="flex";
+}
+
+function sendWhatsApp(e){
+  e.preventDefault();
+  const f=e.target;
+  const msg=`Rezervasyon Talebi:
+Ad: ${f[0].value}
+Tel: ${f[1].value}
+Giriş: ${f[2].value}
+Çıkış: ${f[3].value}`;
+  window.open("https://wa.me/905XXXXXXXXX?text="+encodeURIComponent(msg));
+}
+</script>
+
+</body>
+</html>
